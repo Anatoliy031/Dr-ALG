@@ -1,99 +1,483 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>С днём рождения!</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>С днём рождения, Андрей Леонидович!</title>
+  <!-- Строгий базовый шрифт + праздничный, но читаемый для текста -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: linear-gradient(135deg, #0f2a44, #163b5c);
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      box-sizing: border-box;
     }
 
-    .card {
-      max-width: 900px;
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 48px 56px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    :root {
+      --primary: #020617;
+      --secondary: #0b1120;
+      --gold: #facc15;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #111827 0%, #020617 45%, #000000 100%);
+      background-attachment: fixed;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+      color: #e5e7eb;
+    }
+
+    /* Салют */
+    #fireworksCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.85;
+    }
+
+    /* Звёзды */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* Контейнер и панель */
+    .container {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .glass-panel {
+      max-width: 800px;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 28px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      backdrop-filter: blur(12px);
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.8),
+        inset 0 0 16px rgba(15, 23, 42, 0.7);
+      padding: 28px 22px 22px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: panelIn 0.9s ease-out 0.4s forwards;
+    }
+
+    @keyframes panelIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .title {
-      font-size: 34px;
+      font-size: clamp(1.6rem, 3.6vw, 2.2rem);
       font-weight: 600;
-      margin-bottom: 28px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      color: #f9fafb;
     }
 
-    .text {
-      font-size: 18px;
-      line-height: 1.65;
+    .typewriter-wrap {
+      border-radius: 16px;
+      padding: 16px 14px;
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      margin-top: 8px;
     }
 
-    .text p {
-      margin-bottom: 18px;
+    .typewriter {
+      font-family: 'Cormorant Garamond', 'Playfair Display', 'Georgia', serif;
+      font-style: italic;
+      font-size: 1.28rem;          /* Крупный текст */
+      line-height: 1.7;
+      letter-spacing: 0.01em;
+      color: #f9fafb;
+      white-space: pre-line;
     }
 
-    .footer {
-      margin-top: 32px;
-      font-size: 22px;
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.2em;
+      background: #facc15;
+      margin-left: 3px;
+      animation: blink 1s infinite;
+      vertical-align: text-bottom;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    .panel-footer {
+      margin-top: 14px;
+      text-align: right;
+      font-size: 0.9rem;
+      color: rgba(209, 213, 219, 0.95);
+    }
+
+    .date {
+      margin-bottom: 4px;
+      color: rgba(156, 163, 175, 0.95);
+    }
+
+    .signature {
       font-weight: 500;
     }
 
     @media (max-width: 768px) {
-      .card {
-        padding: 32px 24px;
+      .glass-panel {
+        padding: 22px 16px 18px;
+        margin: 14px 0;
+      }
+      .typewriter {
+        font-size: 1.14rem;       /* Крупный шрифт на мобиле */
+        line-height: 1.65;
       }
       .title {
-        font-size: 26px;
-      }
-      .text {
-        font-size: 16px;
+        font-size: 1.45rem;
       }
     }
   </style>
 </head>
-
 <body>
-  <div class="card">
-    <div class="title">Андрей Леонидович,</div>
+  <!-- Салют -->
+  <canvas id="fireworksCanvas"></canvas>
 
-    <div class="text">
-      <p>примите мои самые искренние и тёплые поздравления с днём рождения!</p>
+  <!-- Звёзды -->
+  <div class="stars" id="stars"></div>
 
-      <p>
-        Руководить одним из крупнейших и стратегически значимых предприятий
-        электрических сетей — задача, требующая не только высочайшего
-        профессионализма, но и редкого сочетания ответственности, системного
-        мышления и человеческой мудрости. Вы с этим справляетесь на уровне
-        настоящего лидера.
-      </p>
+  <!-- Музыка -->
+  <audio id="bg-music" src="music.mp3" preload="auto" loop></audio>
 
-      <p>
-        Под Вашим руководством филиал развивается, уверенно решает сложнейшие
-        производственные задачи, внедряет современные подходы и задаёт высокую
-        планку для всех окружающих. Ваш опыт, взвешенные решения и умение видеть
-        на несколько шагов вперёд заслуживают глубокого уважения.
-      </p>
+  <!-- Одна стеклянная панель -->
+  <div class="container">
+    <div class="glass-panel">
+      <div class="title">С днём рождения, Андрей Леонидович!</div>
 
-      <p>
-        От всей души желаю Вам крепкого здоровья, внутренней энергии и уверенности
-        в каждом решении, стабильности во всех начинаниях, надёжной команды рядом
-        и новых профессиональных достижений. Пусть работа приносит удовлетворение
-        и гордость за результат, а в жизни всегда будет место для радости, тепла
-        и поддержки близких.
-      </p>
+      <div class="typewriter-wrap">
+        <div class="typewriter">
+          <span id="typewriter-text"></span><span class="cursor"></span>
+        </div>
+      </div>
+
+      <div class="panel-footer">
+        <div class="date"></div>
+        <div class="signature">С уважением, Анатолий Абусалимов</div>
+      </div>
     </div>
-
-    <div class="footer">С днём рождения!</div>
   </div>
+
+<script>
+// Звёздное небо
+(function() {
+  const starsContainer = document.getElementById('stars');
+  const starCount = 100;
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.width = star.style.height = Math.random() * 3 + 'px';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+    star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    starsContainer.appendChild(star);
+  }
+})();
+
+// Скрыть дату, если она не задана
+(function() {
+  const dateEl = document.querySelector('.date');
+  if (dateEl && !dateEl.textContent.trim()) {
+    dateEl.style.display = 'none';
+  }
+})();
+
+// Печатающийся текст
+(function() {
+  const el = document.getElementById('typewriter-text');
+  const text = [
+    "Андрей Леонидович,",
+    "примите мои самые искренние и тёплые поздравления с днём рождения!",
+    "",
+    "Руководить одним из крупнейших и стратегически значимых предприятий электрических сетей — задача, требующая не только высочайшего профессионализма, но и редкого сочетания ответственности, системного мышления и человеческой мудрости. Вы с этим справляетесь на уровне настоящего лидера.",
+    "",
+    "Под Вашим руководством филиал развивается, уверенно решает сложнейшие производственные задачи, внедряет современные подходы и задаёт высокую планку для всех окружающих. Ваш опыт, взвешенные решения и умение видеть на несколько шагов вперёд заслуживают глубокого уважения.",
+    "",
+    "От всей души желаю Вам крепкого здоровья, внутренней энергии и уверенности в каждом решении, стабильности во всех начинаниях, надёжной команды рядом и новых профессиональных достижений. Пусть работа приносит удовлетворение и гордость за результат, а в жизни всегда будет место для радости, тепла и поддержки близких.",
+    "",
+    "С днём рождения!"
+  ].join("\n");
+
+  const typeDelay = 12; // быстро
+  let index = 0;
+
+  function type() {
+    if (index < text.length) {
+      el.textContent += text.charAt(index);
+      index++;
+      setTimeout(type, typeDelay);
+    }
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(type, 400);
+  });
+})();
+
+// Если дата не задана — скрыть строку
+(function() {
+  const dateEl = document.querySelector('.panel-footer .date');
+  if (dateEl && !dateEl.textContent.trim()) dateEl.style.display = 'none';
+})();
+
+// САЛЮТ
+const canvas = document.getElementById('fireworksCanvas');
+const ctx = canvas.getContext('2d');
+let fireworks = [];
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor(x, y, color, velocity, size = 2) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.velocity = velocity;
+    this.size = size;
+    this.opacity = 1;
+    this.decay = Math.random() * 0.01 + 0.003;
+    this.gravity = 0.05;
+  }
+
+  update() {
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
+    this.velocity.y += this.gravity;
+    this.velocity.x *= 0.99;
+    this.opacity -= this.decay;
+  }
+
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.opacity;
+    ctx.fillStyle = this.color;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+class Firework {
+  constructor(sx, sy, tx, ty) {
+    this.x = sx;
+    this.y = sy;
+    this.sx = sx;
+    this.sy = sy;
+    this.tx = tx;
+    this.ty = ty;
+    this.distanceToTarget = Math.hypot(tx - sx, ty - sy);
+    this.distanceTraveled = 0;
+    this.trail = [];
+    this.trailLength = 10;
+    this.angle = Math.atan2(ty - sy, tx - sx);
+    this.speed = 2;
+    this.acceleration = 1.05;
+    this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+  }
+
+  update(index) {
+    this.trail.push({ x: this.x, y: this.y });
+    if (this.trail.length > this.trailLength) this.trail.shift();
+
+    this.speed *= this.acceleration;
+    const vx = Math.cos(this.angle) * this.speed;
+    const vy = Math.sin(this.angle) * this.speed;
+
+    this.distanceTraveled = Math.hypot(this.x + vx - this.sx, this.y + vy - this.sy);
+
+    if (this.distanceTraveled >= this.distanceToTarget) {
+      createParticles(this.tx, this.ty);
+      fireworks.splice(index, 1);
+    } else {
+      this.x += vx;
+      this.y += vy;
+    }
+  }
+
+  draw() {
+    for (let i = 0; i < this.trail.length; i++) {
+      ctx.save();
+      ctx.globalAlpha = i / this.trail.length;
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(this.trail[i].x, this.trail[i].y, 1, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    ctx.save();
+    ctx.fillStyle = this.color;
+    ctx.shadowBlur = 18;
+    ctx.shadowColor = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+function createParticles(x, y) {
+  const particleCount = 90 + Math.floor(Math.random() * 30);
+  const baseHue = Math.random() * 360;
+
+  for (let i = 0; i < particleCount; i++) {
+    const angle = (Math.PI * 2 / particleCount) * i;
+    const velocity = Math.random() * 3 + 2;
+    const color = `hsl(${baseHue + Math.random() * 40 - 20}, 100%, ${55 + Math.random() * 15}%)`;
+
+    particles.push(new Particle(
+      x,
+      y,
+      color,
+      {
+        x: Math.cos(angle) * velocity * (0.5 + Math.random()),
+        y: Math.sin(angle) * velocity * (0.5 + Math.random())
+      },
+      Math.random() * 2 + 1
+    ));
+  }
+
+  for (let i = 0; i < 18; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const velocity = Math.random() * 2;
+    particles.push(new Particle(
+      x,
+      y,
+      '#ffffff',
+      {
+        x: Math.cos(angle) * velocity,
+        y: Math.sin(angle) * velocity
+      },
+      Math.random() + 0.7
+    ));
+  }
+}
+
+function launchFireworks() {
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+      fireworks.push(new Firework(
+        Math.random() * canvas.width,
+        canvas.height,
+        Math.random() * canvas.width,
+        Math.random() * canvas.height * 0.5
+      ));
+    }, i * 220);
+  }
+}
+
+// частые залпы
+setInterval(() => {
+  fireworks.push(new Firework(
+    Math.random() * canvas.width,
+    canvas.height,
+    Math.random() * canvas.width,
+    Math.random() * canvas.height * 0.6 + 40
+  ));
+}, 1200);
+
+function animate() {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  let i = fireworks.length;
+  while (i--) {
+    fireworks[i].draw();
+    fireworks[i].update(i);
+  }
+
+  let j = particles.length;
+  while (j--) {
+    particles[j].draw();
+    particles[j].update();
+    if (particles[j].opacity <= 0) particles.splice(j, 1);
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+// МУЗЫКА: каждый тап включает/выключает по очереди
+(function() {
+  const audio = document.getElementById('bg-music');
+  if (!audio) return;
+
+  let lastToggle = 0;
+
+  function toggleMusic() {
+    if (audio.paused || audio.ended) {
+      audio.volume = 0.4;
+      audio.play().catch(() => {
+        // если не получилось — просто не падаем, пользователь может нажать ещё раз
+      });
+    } else {
+      audio.pause();
+    }
+  }
+
+  function handleInteraction() {
+    const now = Date.now();
+    // защита от двойного срабатывания (touchstart + click)
+    if (now - lastToggle < 300) return;
+    lastToggle = now;
+    toggleMusic();
+  }
+
+  document.addEventListener('touchstart', handleInteraction, { passive: true });
+  document.addEventListener('click', handleInteraction);
+})();
+
+// Первый автоматический салют
+setTimeout(launchFireworks, 1500);
+</script>
 </body>
 </html>
